@@ -1,5 +1,5 @@
 const comment = require('../model/commentmodel');
-
+const post = require('../model/postmodel');
 const createComment = async (req, res) => {
     try {
         const {text} = req.body 
@@ -14,6 +14,22 @@ const createComment = async (req, res) => {
             post: postid,       
             user: req.user._id,  
             text: text  
+        });
+        
+       await Post.findByIdAndUpdate(postId, {
+            $inc: { commentsCount: 1 },
+            $push: {
+                recentComments: {
+                    $each: [{
+                        commentId: newComment._id,
+                        user: userId,
+                        text: text,
+                        createdAt: newComment.createdAt
+                    }],
+                    $position: 0, 
+                    $slice: 3    
+                }
+            }
         });
 
         return res.status(201).json({ status: 'success', data: newComment });

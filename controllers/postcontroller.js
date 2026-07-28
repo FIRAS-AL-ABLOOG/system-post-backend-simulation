@@ -33,6 +33,7 @@ const getpost = async (req,res)=>{
     try{
         const posts = await post.find()
         .populate('author' , 'name image')
+        .populate('recentComments.user', 'name image')
         .sort({createdAt: -1 })
         res.status(200).json({
             status : 'success' , message : 'Posts retrieved successfully' ,

@@ -27,6 +27,20 @@ status: {
         ref: 'User',
       }
     ],
+    //  Subset Pattern 
+  // -------------------------------------------------------------
+  recentComments: [
+    {
+      commentId: { type: mongoose.Schema.Types.ObjectId, ref: 'comment' },
+      user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      text: { type: String, required: true },
+      createdAt: { type: Date, default: Date.now }
+    }
+  ],
+  commentsCount: {
+    type: Number,
+    default: 0
+  }
   
 },
 {
